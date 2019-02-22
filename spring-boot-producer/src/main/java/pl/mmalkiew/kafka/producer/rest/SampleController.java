@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class SampleController {
 
     private static final String TOPIC = "sample_kafka_topic";
+    private static final String TOPIC_JSON = "sample_json_kafka_topic";
 
     private final KafkaTemplate<String, Sample> kafkaTemplate;
 
@@ -26,7 +27,16 @@ public class SampleController {
 
         kafkaTemplate.send(TOPIC, Sample.create(message));
 
-        return "Published successfully" + LocalDateTime.now()
-                                                       .toString();
+        return "Published successfully: " + LocalDateTime.now()
+                                                         .toString();
+    }
+
+    @GetMapping("/publish/json/{message}")
+    public String publishSampleJsonMessage(@PathVariable("message") final String message) {
+
+        kafkaTemplate.send(TOPIC_JSON, Sample.create(message));
+
+        return "Published successfully: " + LocalDateTime.now()
+                                                         .toString();
     }
 }
